@@ -10,6 +10,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -22,26 +23,27 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-public final class Home_Sale extends javax.swing.JPanel{
+public final class Home_Sale extends javax.swing.JPanel {
+
+
     public LeVanAn levanan = new LeVanAn();
-    
+
     public ProductDAO productDAO = new ProductDAO();
     public BillDAO billDAO = new BillDAO();
     public AccountDAO accountDAO = new AccountDAO();
     public CustomerDAO customerDAO = new CustomerDAO();
     public ProductTypeDAO productTypeDAO = new ProductTypeDAO();
     public BillDetailDAO billDetailDAO = new BillDetailDAO();
-    
+
     private double totalAmount = 0;
     private int count = 0;
-    
+
     public Home_Sale() {
         initComponents();
         rad_Cash.setSelected(true);
         loadProductsToPanel(jPanel1, jScrollPane3, (DefaultTableModel) tbl_BuyProduct.getModel());
-        
+
     }
-   
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -156,7 +158,6 @@ public final class Home_Sale extends javax.swing.JPanel{
         txt_CustomerPoint.setEditable(false);
         txt_CustomerPoint.setBackground(new java.awt.Color(244, 244, 242));
         txt_CustomerPoint.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txt_CustomerPoint.setForeground(new java.awt.Color(0, 0, 0));
         txt_CustomerPoint.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerPoint.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_CustomerPoint.setRequestFocusEnabled(false);
@@ -210,7 +211,6 @@ public final class Home_Sale extends javax.swing.JPanel{
 
         txt_CustomerName.setBackground(new java.awt.Color(244, 244, 242));
         txt_CustomerName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txt_CustomerName.setForeground(new java.awt.Color(0, 0, 0));
         txt_CustomerName.setText("Nhập SĐT của khách vào");
         txt_CustomerName.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerName.setPreferredSize(new java.awt.Dimension(64, 28));
@@ -290,7 +290,6 @@ public final class Home_Sale extends javax.swing.JPanel{
 
         txt_CustomerPayment.setBackground(new java.awt.Color(244, 244, 242));
         txt_CustomerPayment.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txt_CustomerPayment.setForeground(new java.awt.Color(0, 0, 0));
         txt_CustomerPayment.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerPayment.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_CustomerPayment.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -385,7 +384,6 @@ public final class Home_Sale extends javax.swing.JPanel{
         txt_GrandTotal.setEditable(false);
         txt_GrandTotal.setBackground(new java.awt.Color(244, 244, 242));
         txt_GrandTotal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txt_GrandTotal.setForeground(new java.awt.Color(0, 0, 0));
         txt_GrandTotal.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_GrandTotal.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_GrandTotal.setRequestFocusEnabled(false);
@@ -444,7 +442,6 @@ public final class Home_Sale extends javax.swing.JPanel{
         txt_Point.setEditable(false);
         txt_Point.setBackground(new java.awt.Color(244, 244, 242));
         txt_Point.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txt_Point.setForeground(new java.awt.Color(0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -569,11 +566,14 @@ public final class Home_Sale extends javax.swing.JPanel{
 
         cbx_List.setBackground(new java.awt.Color(244, 244, 242));
         cbx_List.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        cbx_List.setForeground(new java.awt.Color(0, 0, 0));
         cbx_List.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Thức ăn", "Nước uống", "Hàng tiêu dùng", " ", " " }));
 
         txt_Search.setBackground(new java.awt.Color(244, 244, 242));
-        txt_Search.setForeground(new java.awt.Color(0, 0, 0));
+        txt_Search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_SearchActionPerformed(evt);
+            }
+        });
 
         jScrollPane3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
         jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -688,6 +688,7 @@ public final class Home_Sale extends javax.swing.JPanel{
     private void rad_BankMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rad_BankMouseClicked
         // TODO add your handling code here:
         QRCode.setVisible(true);
+
     }//GEN-LAST:event_rad_BankMouseClicked
 
     private void btn_TransferredMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_TransferredMouseClicked
@@ -715,208 +716,223 @@ public final class Home_Sale extends javax.swing.JPanel{
         levanan.moreSmooth(txt_CustomerName, txt_CustomerPayment, evt);
     }//GEN-LAST:event_txt_CustomerPaymentKeyReleased
 
-    /**
-    * Create a JPanel for a product with customized design.
-    * @param product the product data.
-    * @param tableModel the table model to update on click.
-    * @return the designed JPanel for the product.
-    */
-   private JPanel createProduct(Product product, DefaultTableModel tableModel) {
-       DecimalFormat moneyFormat = new DecimalFormat("#,### đ");
-       String pathProductImage = "src/main/resources/Image_product/";
-       String imgPath = product.getImages();
-       String currentImg;
-
-       if (imgPath == null || imgPath.trim().isEmpty() || !new File(pathProductImage + imgPath).exists()) {
-           currentImg = pathProductImage + "wrong.jpg";
-       } else {
-           currentImg = pathProductImage + imgPath;
-       }           
-
-       JPanel panel = new JPanel();
-       panel.setPreferredSize(new Dimension(200, 280)); 
-       panel.setLayout(new GridBagLayout()); 
-       panel.setBackground(new Color(255, 255, 255));
-
-       GridBagConstraints gbc = new GridBagConstraints();
-       gbc.fill = GridBagConstraints.BOTH;
-       gbc.insets = new Insets(10, 10, 10, 10);
-
-       ImageIcon resizedImg = resizeImage(new ImageIcon(currentImg), 180, 200);
-
-       JLabel imgLabel = new JLabel(resizedImg); 
-       JLabel nameLabel = new JLabel(product.getProductName());
-       JLabel priceLabel = new JLabel(moneyFormat.format(product.getPrice()));
-
-       imgLabel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-       imgLabel.setOpaque(true);
-
-       nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
-       nameLabel.setForeground(new Color(0, 102, 204));
-       priceLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-       priceLabel.setForeground(new Color(255, 69, 0));
-
-       imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-       nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-       priceLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-       gbc.gridx = 0;
-       gbc.gridy = 0;
-       gbc.weightx = 1.0;
-       gbc.weighty = 0.7;
-       panel.add(imgLabel, gbc);
-
-       gbc.gridy = 1;
-       gbc.weighty = 0.1;
-       panel.add(nameLabel, gbc);
-
-       gbc.gridy = 2;
-       gbc.weighty = 0.2;
-       panel.add(priceLabel, gbc);
-
-       panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-       panel.setToolTipText("Click để xem chi tiết");
-
-       panel.addMouseListener(new java.awt.event.MouseAdapter() {
-           @Override
-           public void mouseEntered(java.awt.event.MouseEvent evt) {
-               panel.setBackground(new Color(240, 240, 240));
-           }
-           @Override
-           public void mouseExited(java.awt.event.MouseEvent evt) {
-               panel.setBackground(new Color(255, 255, 255));
-           }
-           @Override
-           public void mouseClicked(java.awt.event.MouseEvent evt) {
-               panel.setBackground(new Color(210, 210, 210));
-               List<Product> clickedProducts = new ArrayList<>();
-               clickedProducts.add(product);
-               loadProductDataToTableSale(tableModel, clickedProducts);
-           }
-       });
-
-       return panel;
-   }
-
-   /**
-    * Resize the given ImageIcon to specified width and height.
-    * @param originalIcon the original ImageIcon.
-    * @param width the target width.
-    * @param height the target height.
-    * @return the resized ImageIcon.
-    */
-   public ImageIcon resizeImage(ImageIcon originalIcon, int width, int height) {
-       // Get image from ImageIcon
-       Image originalImage = originalIcon.getImage();
-
-       // Create new image with specified dimensions
-       Image resizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
-       // Return the resized ImageIcon
-       return new ImageIcon(resizedImage);
-   }
-
-   /**
-    * Load products into a JPanel with a GridBagLayout.
-    * @param jPanel the JPanel to populate.
-    * @param scrollPane the JScrollPane to update.
-    * @param tableModel the table model to update on click.
-    */
-   public void loadProductsToPanel(JPanel jPanel, JScrollPane scrollPane, DefaultTableModel tableModel) {
-       List<Product> productList = productDAO.loadAllProductsData();
-
-       jPanel.setLayout(new GridBagLayout());
-       GridBagConstraints gbc = new GridBagConstraints();
-
-       int maxProductsPerRow = 6;
-       int currentRow = 0; 
-       int currentColumn = 0;
-
-       gbc.fill = GridBagConstraints.BOTH; 
-       gbc.anchor = GridBagConstraints.CENTER;
-       gbc.weightx = 1.0;
-       gbc.weighty = 1.0;
-       gbc.insets = new Insets(5, 5, 5, 5); 
-
-       for (Product product : productList) {
-           JPanel productPanel = createProduct(product, tableModel); 
-
-           gbc.gridx = currentColumn;
-           gbc.gridy = currentRow;
-           gbc.gridwidth = 1;
-           gbc.gridheight = 1;
-
-           jPanel.add(productPanel, gbc);
-
-           currentColumn++;
-           if (currentColumn >= maxProductsPerRow) {
-               currentColumn = 0;
-               currentRow++;
-           }
-       }
-
-       int totalHeight = (280 + 5) * (currentRow + 1);
-       int totalWidth = (100 + 5) * maxProductsPerRow;
-
-       jPanel.setPreferredSize(new Dimension(totalWidth, totalHeight));
-
-       jPanel.revalidate();
-       jPanel.repaint();
-       scrollPane.revalidate();
-       scrollPane.repaint();
-   }
-
-   /**
-    * Load selected product data into the sale table model.
-    * If a product already exists in the table, increment its quantity and update the total price.
-    * @param tableModel the table model to populate.
-    * @param productList the list of products to add to the sale table.
-    */
-   public void loadProductDataToTableSale(DefaultTableModel tableModel, List<Product> productList) {
-       DecimalFormat moneyFormat = new DecimalFormat("#,### đ");
-
-       for (Product product : productList) {
-           boolean productExists = false;
-           double productPrice = product.getPrice();
-
-           // Duyệt qua tất cả các hàng trong bảng để kiểm tra sản phẩm đã tồn tại chưa
-           for (int i = 0; i < tableModel.getRowCount(); i++) {
-               String productId = tableModel.getValueAt(i, 1).toString();
-               if (productId.equals(product.getProductId())) {
-                   // Sản phẩm đã tồn tại, tăng số lượng và cập nhật thành tiền
-                   int quantity = (int) tableModel.getValueAt(i, 4) + 1;
-                   double total = quantity * productPrice;
-                   tableModel.setValueAt(quantity, i, 4); // Cập nhật số lượng
-                   tableModel.setValueAt(moneyFormat.format(total), i, 6); // Cập nhật thành tiền
-                   totalAmount += productPrice;
-                   productExists = true;
-                   break;
-               }
-           }
-
-           // Nếu sản phẩm chưa tồn tại, thêm sản phẩm vào bảng
-           if (!productExists) {
-               count ++;
-               Object[] rowData = {
-                   count,
-                   product.getProductId(),
-                   product.getProductName(),
-                   product.getUnit(),
-                   1, // Số lượng mặc định là 1
-                   moneyFormat.format(productPrice),
-                   moneyFormat.format(productPrice)
-               };
-               tableModel.addRow(rowData);
-               totalAmount += productPrice;
-           }
-
-           // Cập nhật tổng số tiền
-           txt_TotalAmount.setText(moneyFormat.format(totalAmount));
-       }
-   }
-
+    private void txt_SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_SearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_SearchActionPerformed
 
     
+    /**
+     * Create a JPanel for a product with customized design.
+     *
+     * @param product the product data.
+     * @param tableModel the table model to update on click.
+     * @return the designed JPanel for the product.
+     */
+    private JPanel createProduct(Product product, DefaultTableModel tableModel) {
+        DecimalFormat moneyFormat = new DecimalFormat("#,### đ");
+        String pathProductImage = "src/main/resources/Image_product/";
+        String imgPath = product.getImages();
+        String currentImg;
+
+        if (imgPath == null || imgPath.trim().isEmpty() || !new File(pathProductImage + imgPath).exists()) {
+            currentImg = pathProductImage + "wrong.jpg";
+        } else {
+            currentImg = pathProductImage + imgPath;
+        }
+
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(200, 280));
+        panel.setLayout(new GridBagLayout());
+        panel.setBackground(new Color(255, 255, 255));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        ImageIcon resizedImg = resizeImage(new ImageIcon(currentImg), 180, 200);
+
+        JLabel imgLabel = new JLabel(resizedImg);
+        JLabel nameLabel = new JLabel(product.getProductName());
+        JLabel priceLabel = new JLabel(moneyFormat.format(product.getPrice()));
+
+        imgLabel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        imgLabel.setOpaque(true);
+
+        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        nameLabel.setForeground(new Color(0, 102, 204));
+        priceLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        priceLabel.setForeground(new Color(255, 69, 0));
+
+        imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        priceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.7;
+        panel.add(imgLabel, gbc);
+
+        gbc.gridy = 1;
+        gbc.weighty = 0.1;
+        panel.add(nameLabel, gbc);
+
+        gbc.gridy = 2;
+        gbc.weighty = 0.2;
+        panel.add(priceLabel, gbc);
+
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panel.setToolTipText("Click để xem chi tiết");
+
+        // Khai báo biến để lưu trữ MouseListener
+        MouseAdapter mouseAdapter = new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panel.setBackground(new Color(240, 240, 240));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                panel.setBackground(new Color(255, 255, 255));
+            }
+
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panel.setBackground(new Color(210, 210, 210));
+                List<Product> clickedProducts = new ArrayList<>();
+                clickedProducts.add(product);
+                loadProductDataToTableSale(tableModel, clickedProducts);
+            }
+        };
+
+// Thêm MouseListener vào panel
+        panel.addMouseListener(mouseAdapter);
+
+        return panel;
+    }
+
+    /**
+     * Resize the given ImageIcon to specified width and height.
+     *
+     * @param originalIcon the original ImageIcon.
+     * @param width the target width.
+     * @param height the target height.
+     * @return the resized ImageIcon.
+     */
+    public ImageIcon resizeImage(ImageIcon originalIcon, int width, int height) {
+        // Get image from ImageIcon
+        Image originalImage = originalIcon.getImage();
+
+        // Create new image with specified dimensions
+        Image resizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+
+        // Return the resized ImageIcon
+        return new ImageIcon(resizedImage);
+    }
+
+    /**
+     * Load products into a JPanel with a GridBagLayout.
+     *
+     * @param jPanel the JPanel to populate.
+     * @param scrollPane the JScrollPane to update.
+     * @param tableModel the table model to update on click.
+     */
+    public void loadProductsToPanel(JPanel jPanel, JScrollPane scrollPane, DefaultTableModel tableModel) {
+        List<Product> productList = productDAO.loadAllProductsData();
+
+        jPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        int maxProductsPerRow = 6;
+        int currentRow = 0;
+        int currentColumn = 0;
+
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        for (Product product : productList) {
+            JPanel productPanel = createProduct(product, tableModel);
+
+            gbc.gridx = currentColumn;
+            gbc.gridy = currentRow;
+            gbc.gridwidth = 1;
+            gbc.gridheight = 1;
+
+            jPanel.add(productPanel, gbc);
+
+            currentColumn++;
+            if (currentColumn >= maxProductsPerRow) {
+                currentColumn = 0;
+                currentRow++;
+            }
+        }
+
+        int totalHeight = (280 + 5) * (currentRow + 1);
+        int totalWidth = (100 + 5) * maxProductsPerRow;
+
+        jPanel.setPreferredSize(new Dimension(totalWidth, totalHeight));
+
+        jPanel.revalidate();
+        jPanel.repaint();
+        scrollPane.revalidate();
+        scrollPane.repaint();
+    }
+
+    /**
+     * Load selected product data into the sale table model. If a product
+     * already exists in the table, increment its quantity and update the total
+     * price.
+     *
+     * @param tableModel the table model to populate.
+     * @param productList the list of products to add to the sale table.
+     */
+    public void loadProductDataToTableSale(DefaultTableModel tableModel, List<Product> productList) {
+        DecimalFormat moneyFormat = new DecimalFormat("#,### đ");
+
+        for (Product product : productList) {
+            boolean productExists = false;
+            double productPrice = product.getPrice();
+
+            // Duyệt qua tất cả các hàng trong bảng để kiểm tra sản phẩm đã tồn tại chưa
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                String productId = tableModel.getValueAt(i, 1).toString();
+                if (productId.equals(product.getProductId())) {
+                    // Sản phẩm đã tồn tại, tăng số lượng và cập nhật thành tiền
+                    int quantity = (int) tableModel.getValueAt(i, 4) + 1;
+                    double total = quantity * productPrice;
+                    tableModel.setValueAt(quantity, i, 4); // Cập nhật số lượng
+                    tableModel.setValueAt(moneyFormat.format(total), i, 6); // Cập nhật thành tiền
+                    totalAmount += productPrice;
+                    productExists = true;
+                    break;
+                }
+            }
+
+            // Nếu sản phẩm chưa tồn tại, thêm sản phẩm vào bảng
+            if (!productExists) {
+                count++;
+                Object[] rowData = {
+                    count,
+                    product.getProductId(),
+                    product.getProductName(),
+                    product.getUnit(),
+                    1, // Số lượng mặc định là 1
+                    moneyFormat.format(productPrice),
+                    moneyFormat.format(productPrice)
+                };
+                tableModel.addRow(rowData);
+                totalAmount += productPrice;
+            }
+
+            // Cập nhật tổng số tiền
+            txt_TotalAmount.setText(moneyFormat.format(totalAmount));
+        }
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel BuyList;
     private javax.swing.JPanel CustomerForm;
