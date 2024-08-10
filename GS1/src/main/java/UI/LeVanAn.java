@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -38,6 +39,8 @@ public class LeVanAn {
                 ((JTextField) component).setText("");           
             } else if (component instanceof JTextArea) {
                 ((JTextArea) component).setText("");            
+            } else if (component instanceof JComboBox){
+                ((JComboBox) component).setSelectedIndex(-1);
             }
         }
     }

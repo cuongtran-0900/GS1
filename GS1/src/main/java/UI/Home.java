@@ -2,7 +2,6 @@ package UI;
 
 import UI.Home_Panels.*;
 
-
 public final class Home extends javax.swing.JFrame {
     private final Home_History homeHistory = new Home_History();
     private final Home_Report homeReport = new Home_Report();
