@@ -1,6 +1,9 @@
 package UI.Home_Panels;
 
 import DAO.*;
+import MODEL.Bill;
+import MODEL.BillDetail;
+import MODEL.Customer;
 import UI.*;
 import MODEL.Product;
 import java.awt.Color;
@@ -10,6 +13,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.text.DecimalFormat;
@@ -18,6 +23,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -25,23 +31,63 @@ import javax.swing.table.DefaultTableModel;
 
 public final class Home_Sale extends javax.swing.JPanel {
 
-
     public LeVanAn levanan = new LeVanAn();
 
     public ProductDAO productDAO = new ProductDAO();
+    private List<Product> productList = productDAO.loadAllProductsData();
+    
     public BillDAO billDAO = new BillDAO();
+    private List<Bill> billList = billDAO.loadAllBillsData();
+    
     public AccountDAO accountDAO = new AccountDAO();
+    
     public CustomerDAO customerDAO = new CustomerDAO();
+    private List<Customer> CustomerList = customerDAO.loadAllCustomersData();
+    
     public ProductTypeDAO productTypeDAO = new ProductTypeDAO();
     public BillDetailDAO billDetailDAO = new BillDetailDAO();
+    
+    java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(System.currentTimeMillis());
 
+    String customerID = "";
+    double totalAmount = 0;
     
 
     public Home_Sale() {
         initComponents();
         rad_Cash.setSelected(true);
         loadProductsToPanel(jPanel1, jScrollPane3, (DefaultTableModel) tbl_BuyProduct.getModel());
+        tableEVT();
+    }
+    
+    private void tableEVT(){
+        txt_CustomerName.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String phoneNumber = txt_CustomerName.getText().trim();
+        Customer foundCustomer = CustomerList.stream()
+                .filter(customer -> customer.getPhone().equals(phoneNumber))
+                .findFirst()
+                .orElse(null);
 
+        if (foundCustomer != null) {
+            // Lấy CustomersID từ khách hàng được tìm thấy
+            customerID = foundCustomer.getCustomerId();
+            // Làm gì đó với customerID, ví dụ:
+            JOptionPane.showMessageDialog(null, "CustomersID: " + customerID);
+        } else {
+            JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng với số điện thoại " + phoneNumber);
+        }
+    }
+});
+       
+        
+    }
+    
+    private void TotalAmount(){
+        
+        
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -62,8 +108,8 @@ public final class Home_Sale extends javax.swing.JPanel {
         sp_CustomerUsePoint = new javax.swing.JSpinner();
         txt_CustomerDiscount = new javax.swing.JTextField();
         txt_CustomerName = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rad_Point = new javax.swing.JRadioButton();
+        rad_Apply = new javax.swing.JRadioButton();
         ShowTotal = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -79,6 +125,7 @@ public final class Home_Sale extends javax.swing.JPanel {
         rad_Cash = new javax.swing.JRadioButton();
         rad_Bank = new javax.swing.JRadioButton();
         txt_Point = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         btn_Complete = new javax.swing.JButton();
         ProductForm = new javax.swing.JPanel();
         BuyList = new javax.swing.JPanel();
@@ -207,6 +254,11 @@ public final class Home_Sale extends javax.swing.JPanel {
                 txt_CustomerNameMouseClicked(evt);
             }
         });
+        txt_CustomerName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_CustomerNameActionPerformed(evt);
+            }
+        });
         txt_CustomerName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_CustomerNameKeyReleased(evt);
@@ -220,24 +272,24 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         CustomerForm.add(txt_CustomerName, gridBagConstraints);
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Tích điểm");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(rad_Point);
+        rad_Point.setText("Tích điểm");
+        rad_Point.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                rad_PointActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
-        CustomerForm.add(jRadioButton1, gridBagConstraints);
+        CustomerForm.add(rad_Point, gridBagConstraints);
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Áp Dụng");
+        buttonGroup1.add(rad_Apply);
+        rad_Apply.setText("Áp Dụng");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
-        CustomerForm.add(jRadioButton2, gridBagConstraints);
+        CustomerForm.add(rad_Apply, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -457,6 +509,12 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         ShowTotal.add(txt_Point, gridBagConstraints);
 
+        jLabel4.setText("Tích điểm : ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        ShowTotal.add(jLabel4, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -471,6 +529,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         btn_Complete.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         btn_Complete.setForeground(new java.awt.Color(255, 255, 255));
         btn_Complete.setText("Hoàn tất");
+        btn_Complete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CompleteActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -722,9 +785,17 @@ public final class Home_Sale extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_SearchActionPerformed
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+    private void rad_PointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rad_PointActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    }//GEN-LAST:event_rad_PointActionPerformed
+
+    private void txt_CustomerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_CustomerNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_CustomerNameActionPerformed
+
+    private void btn_CompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CompleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_CompleteActionPerformed
 
     
     /**
@@ -844,7 +915,7 @@ public final class Home_Sale extends javax.swing.JPanel {
      * @param tableModel the table model to update on click.
      */
     public void loadProductsToPanel(JPanel jPanel, JScrollPane scrollPane, DefaultTableModel tableModel) {
-        List<Product> productList = productDAO.loadAllProductsData();
+        
 
         jPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -896,7 +967,7 @@ public final class Home_Sale extends javax.swing.JPanel {
      * @param productList the list of products to add to the sale table.
      */
     public void loadProductDataToTableSale(DefaultTableModel tableModel, List<Product> productList) {
-        double totalAmount = 0;
+        
         int count = 0;
         DecimalFormat moneyFormat = new DecimalFormat("#,### đ");
 
@@ -940,7 +1011,49 @@ public final class Home_Sale extends javax.swing.JPanel {
         }
     }
     
-    
+    public void payment(){
+        Bill B = new Bill();
+
+        // Kiểm tra mã hóa đơn có tồn tại không
+            try {
+                
+                
+                // Thiết lập thông tin cho hóa đơn
+//                B.setAccountId(Integer.parseInt(txt_AcountID.getText().trim())); // Mã nhân viên
+                B.setCustomerId(customerID); // Mã khách hàng
+                B.setCreatedDate(currentTimestamp);
+                B.setTotalPrice(Double.parseDouble(txt_TotalAmount.getText().trim())); // Tổng tiền
+                B.setBillId(billDAO.NewBIllID());
+                // Thêm chi tiết hóa đơn nhập
+                List<BillDetail> chiTietList = new ArrayList<>();
+                for (int i = 0; i < tbl_BuyProduct.getRowCount(); i++) {
+                    BillDetail chitiet = new BillDetail();
+
+                    chitiet.setProductId((String) tbl_BuyProduct.getValueAt(i, 0)); // Mã thuốc
+                    chitiet.setNameProduct((String) tbl_BuyProduct.getValueAt(i, 1)); // Tên thuốc
+                    chitiet.setQuantity((int) tbl_BuyProduct.getValueAt(i, 2)); // Số lượng
+                    chitiet.setPrice((double) tbl_BuyProduct.getValueAt(i, 3)); // Giá nhập
+                    chitiet.setSubtotal((double) tbl_BuyProduct.getValueAt(i, 4)); // Thành tiền
+
+                    chiTietList.add(chitiet);
+                }
+                B.setBillDetailList(chiTietList);
+
+                // Lưu thông tin hóa đơn vào cơ sở dữ liệu
+                int result = billDAO.save(B);
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+                    billDAO.loadAllBillsData(); // Tải lại danh sách hóa đơn
+                } else {
+                    JOptionPane.showMessageDialog(this, "Lưu thất bại");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Tổng tiền và số lượng phải là số hợp lệ.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi: " + e.getMessage());
+            }
+        
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -961,6 +1074,7 @@ public final class Home_Sale extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -968,15 +1082,15 @@ public final class Home_Sale extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel qrCode;
+    private javax.swing.JRadioButton rad_Apply;
     private javax.swing.JRadioButton rad_Bank;
     private javax.swing.JRadioButton rad_Cash;
     private javax.swing.ButtonGroup rad_PaymentGroup;
+    private javax.swing.JRadioButton rad_Point;
     private javax.swing.JSpinner sp_CustomerUsePoint;
     private javax.swing.JTable tbl_BuyProduct;
     private javax.swing.JTextField txt_CustomerDiscount;

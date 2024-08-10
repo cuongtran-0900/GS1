@@ -18,6 +18,9 @@ public class BillDAO extends ConnectSQL {
 
     List<Bill> billList = new ArrayList<>();
     Bill BillCurent = null;
+    
+    CustomerDAO customerDAO = new CustomerDAO();
+    List<Customer> customersList = customerDAO.loadAllCustomersData();
     /**
      * Load all bill data from the database.
      *
@@ -79,6 +82,7 @@ public class BillDAO extends ConnectSQL {
             System.out.println("--------------------------");
         }
     }
+    
     public boolean check(String ma) {
         for (Bill b : billList) {
             if (ma.equals(b.getBillId())) {
@@ -87,8 +91,17 @@ public class BillDAO extends ConnectSQL {
         }
         return true;
     }
+    
+    public boolean checkCustomer (String CSID){
+        for (Customer cs : customersList) {
+            if (CSID.equals(cs.getCustomerId())) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-    public String fillmaphatsinh() {
+    public String fillBillID() {
         String mps = null;
         try {
             String sql = "SELECT BillID FROM Bill WHERE BillID LIKE 'hd%' ORDER BY BillID DESC";
@@ -108,11 +121,11 @@ public class BillDAO extends ConnectSQL {
         return manv;
     }
 
-    public String Maphatsinh() {
+    public String NewBIllID() {
         if (billList.size() <= 0) {
             return "hd001";
         } else {
-            int ma = Integer.parseInt(fillmaphatsinh()) + 1;
+            int ma = Integer.parseInt(fillBillID()) + 1;
             return String.format("hd%03d", ma);
         }
     }
