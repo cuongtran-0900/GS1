@@ -635,6 +635,9 @@ public final class Home_Sale extends javax.swing.JPanel {
         QRCode.setMaximumSize(new java.awt.Dimension(300, 509));
         QRCode.setLayout(new java.awt.GridBagLayout());
 
+        jPanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        qrCode.setBackground(new java.awt.Color(255, 255, 255));
         qrCode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/qrPayment.jpg"))); // NOI18N
 
         btn_Transferred.setText("Đã chuyển khoản");

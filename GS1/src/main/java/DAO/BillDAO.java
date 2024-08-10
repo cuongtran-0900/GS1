@@ -2,7 +2,7 @@ package DAO;
 
 import MODEL.Bill;
 import MODEL.BillDetail;
-import UI.Home_Panels.Home_BIll;
+import UI.Home_Panels.Home_History;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,7 +57,7 @@ public class BillDAO extends ConnectSQL {
             }
 
         } catch (SQLException e) {
-            Logger.getLogger(Home_BIll.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(Home_History.class.getName()).log(Level.SEVERE, null, e);
         }
         return billList;
     }
@@ -100,7 +100,7 @@ public class BillDAO extends ConnectSQL {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Home_BIll.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Home_History.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         int so = Integer.parseInt(mps.substring(3, 5));
@@ -147,7 +147,7 @@ public class BillDAO extends ConnectSQL {
                 return row1;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Home_BIll.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Home_History.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
     }
@@ -221,7 +221,7 @@ public class BillDAO extends ConnectSQL {
         stInsert.close(); // Đóng PreparedStatement
 
     } catch (SQLException ex) {
-        Logger.getLogger(Home_BIll.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(Home_History.class.getName()).log(Level.SEVERE, null, ex);
     }
     return -1;
 }
