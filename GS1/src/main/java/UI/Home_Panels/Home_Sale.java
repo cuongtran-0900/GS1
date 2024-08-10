@@ -27,29 +27,31 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 public final class Home_Sale extends javax.swing.JPanel {
+    
 
     public LeVanAn levanan = new LeVanAn();
 
     public ProductDAO productDAO = new ProductDAO();
     private List<Product> productList = productDAO.loadAllProductsData();
-
+    
     public BillDAO billDAO = new BillDAO();
     private List<Bill> billList = billDAO.loadAllBillsData();
-
+    
     public AccountDAO accountDAO = new AccountDAO();
-
+    
     public CustomerDAO customerDAO = new CustomerDAO();
     private List<Customer> CustomerList = customerDAO.loadAllCustomersData();
-
+    
     public ProductTypeDAO productTypeDAO = new ProductTypeDAO();
     public BillDetailDAO billDetailDAO = new BillDetailDAO();
+    List<Product> productList = productDAO.loadAllProductsData();
 
-   
+    String customerID = "";
+    double totalAmount = 0;
+    
 
     public Home_Sale() {
         initComponents();
@@ -57,62 +59,35 @@ public final class Home_Sale extends javax.swing.JPanel {
         loadProductsToPanel(jPanel1, jScrollPane3, (DefaultTableModel) tbl_BuyProduct.getModel());
         tableEVT();
     }
-
-    private void tableEVT() {
+    
+    private void tableEVT(){
         txt_CustomerName.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String phoneNumber = txt_CustomerName.getText().trim();
-                Customer foundCustomer = CustomerList.stream()
-                        .filter(customer -> customer.getPhone().equals(phoneNumber))
-                        .findFirst()
-                        .orElse(null);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String phoneNumber = txt_CustomerName.getText().trim();
+        Customer foundCustomer = CustomerList.stream()
+                .filter(customer -> customer.getPhone().equals(phoneNumber))
+                .findFirst()
+                .orElse(null);
 
-                if (foundCustomer != null) {
-                    // Lấy CustomersID từ khách hàng được tìm thấy
-                    customerID = foundCustomer.getCustomerId();
-                    customerpoint = foundCustomer.getPoint();
-                    // Làm gì đó với customerID, ví dụ:
-                    JOptionPane.showMessageDialog(null, "CustomersID: " + customerID);
-                    txt_CustomerPoint.setText(String.valueOf(customerpoint));
-                } else {
-                    JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng với số điện thoại " + phoneNumber);
-                }
-            }
-        });
-
-        final int[] previousValue = {(int) sp_CustomerUsePoint.getValue()};
-
-        sp_CustomerUsePoint.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                int currentValue = (int) sp_CustomerUsePoint.getValue();
-
-                // Kiểm tra nếu giá trị mới khác với giá trị trước đó
-                if (currentValue != previousValue[0]) {
-                    // Tính toán và cập nhật tổng tiền
-                    int discountValue = currentValue * 500;
-                    int updatedTotalAmount = (int) (totalAmount - discountValue);
-                    txt_TotalAmount.setText(String.valueOf(updatedTotalAmount));
-
-                    // Cập nhật giá trị trước đó thành giá trị hiện tại
-                    previousValue[0] = currentValue;
-                }
-            }
-        });
-
+        if (foundCustomer != null) {
+            // Lấy CustomersID từ khách hàng được tìm thấy
+            customerID = foundCustomer.getCustomerId();
+            // Làm gì đó với customerID, ví dụ:
+            JOptionPane.showMessageDialog(null, "CustomersID: " + customerID);
+        } else {
+            JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng với số điện thoại " + phoneNumber);
+        }
     }
-
-    private void UpdateTotalAmount() {
-        point = Math.round((int) (totalAmount / 10000));
-        txt_Point.setText(String.valueOf(point));
-        int discount = (int) sp_CustomerUsePoint.getValue() * 500;
-        totalAmount = totalAmount - discount;
+});
+       
+        
     }
-
-    private void AddPoint() {
-        point = Math.round((int) (totalAmount / 10000));
-        txt_Point.setText(String.valueOf(point));
+    
+    private void TotalAmount(){
+        
+        
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -152,6 +127,7 @@ public final class Home_Sale extends javax.swing.JPanel {
         txt_Point = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btn_Complete = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         ProductForm = new javax.swing.JPanel();
         BuyList = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -169,7 +145,7 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout(0, 10));
 
-        PaymentForm.setBackground(new java.awt.Color(246, 245, 242));
+        PaymentForm.setBackground(new java.awt.Color(254, 254, 252));
         PaymentForm.setLayout(new java.awt.GridBagLayout());
 
         CustomerForm.setBackground(new java.awt.Color(8, 131, 149));
@@ -182,10 +158,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         jLabel7.setText("Sử dụng");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         CustomerForm.add(jLabel7, gridBagConstraints);
 
@@ -195,10 +172,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         jLabel8.setText("Số điểm");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         CustomerForm.add(jLabel8, gridBagConstraints);
 
@@ -208,10 +186,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         jLabel9.setText("Tổng giảm");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         CustomerForm.add(jLabel9, gridBagConstraints);
 
@@ -221,24 +200,21 @@ public final class Home_Sale extends javax.swing.JPanel {
         jLabel10.setText("Khách hàng");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         CustomerForm.add(jLabel10, gridBagConstraints);
 
         txt_CustomerPoint.setEditable(false);
         txt_CustomerPoint.setBackground(new java.awt.Color(244, 244, 242));
         txt_CustomerPoint.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txt_CustomerPoint.setForeground(java.awt.Color.black);
         txt_CustomerPoint.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerPoint.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_CustomerPoint.setRequestFocusEnabled(false);
-        txt_CustomerPoint.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_CustomerPointActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -262,6 +238,7 @@ public final class Home_Sale extends javax.swing.JPanel {
         txt_CustomerDiscount.setEditable(false);
         txt_CustomerDiscount.setBackground(new java.awt.Color(244, 244, 242));
         txt_CustomerDiscount.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txt_CustomerDiscount.setForeground(java.awt.Color.black);
         txt_CustomerDiscount.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerDiscount.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_CustomerDiscount.setRequestFocusEnabled(false);
@@ -276,6 +253,7 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         txt_CustomerName.setBackground(new java.awt.Color(244, 244, 242));
         txt_CustomerName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txt_CustomerName.setForeground(java.awt.Color.black);
         txt_CustomerName.setText("Nhập SĐT của khách vào");
         txt_CustomerName.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerName.setPreferredSize(new java.awt.Dimension(64, 28));
@@ -304,11 +282,6 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         buttonGroup1.add(rad_Point);
         rad_Point.setText("Tích điểm");
-        rad_Point.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rad_PointMouseClicked(evt);
-            }
-        });
         rad_Point.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rad_PointActionPerformed(evt);
@@ -317,26 +290,22 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
-        CustomerForm.add(rad_Point, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        CustomerForm.add(jRadioButton1, gridBagConstraints);
 
         buttonGroup1.add(rad_Apply);
         rad_Apply.setText("Áp Dụng");
-        rad_Apply.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rad_ApplyMouseClicked(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
-        CustomerForm.add(rad_Apply, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        CustomerForm.add(jRadioButton2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         PaymentForm.add(CustomerForm, gridBagConstraints);
@@ -352,10 +321,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         ShowTotal.add(jLabel3, gridBagConstraints);
 
@@ -366,10 +336,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         ShowTotal.add(jLabel6, gridBagConstraints);
 
@@ -380,15 +351,17 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         ShowTotal.add(jLabel2, gridBagConstraints);
 
         txt_CustomerPayment.setBackground(new java.awt.Color(244, 244, 242));
-        txt_CustomerPayment.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txt_CustomerPayment.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txt_CustomerPayment.setForeground(java.awt.Color.black);
         txt_CustomerPayment.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerPayment.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_CustomerPayment.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -407,8 +380,8 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         txt_GiveBack.setEditable(false);
         txt_GiveBack.setBackground(new java.awt.Color(244, 244, 242));
-        txt_GiveBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txt_GiveBack.setForeground(new java.awt.Color(255, 0, 0));
+        txt_GiveBack.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txt_GiveBack.setForeground(java.awt.Color.black);
         txt_GiveBack.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_GiveBack.setPreferredSize(new java.awt.Dimension(64, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -427,10 +400,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         ShowTotal.add(jLabel1, gridBagConstraints);
 
@@ -441,17 +415,18 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         ShowTotal.add(jLabel5, gridBagConstraints);
 
         txt_TotalAmount.setEditable(false);
         txt_TotalAmount.setBackground(new java.awt.Color(244, 244, 242));
-        txt_TotalAmount.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        txt_TotalAmount.setForeground(new java.awt.Color(255, 0, 0));
+        txt_TotalAmount.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        txt_TotalAmount.setForeground(java.awt.Color.black);
         txt_TotalAmount.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_TotalAmount.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_TotalAmount.setRequestFocusEnabled(false);
@@ -466,8 +441,8 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         txt_Discount.setEditable(false);
         txt_Discount.setBackground(new java.awt.Color(244, 244, 242));
-        txt_Discount.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txt_Discount.setForeground(new java.awt.Color(255, 255, 0));
+        txt_Discount.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txt_Discount.setForeground(java.awt.Color.black);
         txt_Discount.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_Discount.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_Discount.setRequestFocusEnabled(false);
@@ -482,7 +457,8 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         txt_GrandTotal.setEditable(false);
         txt_GrandTotal.setBackground(new java.awt.Color(244, 244, 242));
-        txt_GrandTotal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txt_GrandTotal.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txt_GrandTotal.setForeground(java.awt.Color.black);
         txt_GrandTotal.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_GrandTotal.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_GrandTotal.setRequestFocusEnabled(false);
@@ -539,12 +515,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         ShowTotal.add(rad_Bank, gridBagConstraints);
 
         txt_Point.setEditable(false);
-        txt_Point.setBackground(new java.awt.Color(244, 244, 242));
+        txt_Point.setBackground(new java.awt.Color(204, 204, 204));
         txt_Point.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         ShowTotal.add(txt_Point, gridBagConstraints);
@@ -557,7 +532,7 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
@@ -566,7 +541,7 @@ public final class Home_Sale extends javax.swing.JPanel {
         PaymentForm.add(ShowTotal, gridBagConstraints);
 
         btn_Complete.setBackground(new java.awt.Color(255, 75, 102));
-        btn_Complete.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        btn_Complete.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         btn_Complete.setForeground(new java.awt.Color(255, 255, 255));
         btn_Complete.setText("Hoàn tất");
         btn_Complete.addActionListener(new java.awt.event.ActionListener() {
@@ -576,13 +551,29 @@ public final class Home_Sale extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 15;
         gridBagConstraints.ipady = 15;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         PaymentForm.add(btn_Complete, gridBagConstraints);
+
+        jButton1.setBackground(new java.awt.Color(102, 102, 102));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Làm mới");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        PaymentForm.add(jButton1, gridBagConstraints);
 
         add(PaymentForm, java.awt.BorderLayout.LINE_END);
 
@@ -706,7 +697,7 @@ public final class Home_Sale extends javax.swing.JPanel {
                     .addGroup(ProductSearchLayout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(18, 18, 18)
-                        .addComponent(txt_Search, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                        .addComponent(txt_Search, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cbx_List, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -720,7 +711,7 @@ public final class Home_Sale extends javax.swing.JPanel {
                     .addComponent(cbx_List, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_Search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -779,12 +770,12 @@ public final class Home_Sale extends javax.swing.JPanel {
         ProductFormLayout.setHorizontalGroup(
             ProductFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(QRCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(BuyList, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+            .addComponent(BuyList, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
         );
         ProductFormLayout.setVerticalGroup(
             ProductFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(QRCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(BuyList, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+            .addComponent(BuyList, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
         );
 
         add(ProductForm, java.awt.BorderLayout.CENTER);
@@ -793,6 +784,7 @@ public final class Home_Sale extends javax.swing.JPanel {
     private void rad_BankMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rad_BankMouseClicked
         // TODO add your handling code here:
         QRCode.setVisible(true);
+
     }//GEN-LAST:event_rad_BankMouseClicked
 
     private void btn_TransferredMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_TransferredMouseClicked
@@ -834,24 +826,15 @@ public final class Home_Sale extends javax.swing.JPanel {
 
     private void btn_CompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CompleteActionPerformed
         // TODO add your handling code here:
-        payment();
-
     }//GEN-LAST:event_btn_CompleteActionPerformed
 
-    private void txt_CustomerPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_CustomerPointActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_CustomerPointActionPerformed
+        productList = productDAO.loadAllProductsData();
+        loadProductsToPanel(jPanel1, jScrollPane3, (DefaultTableModel) tbl_BuyProduct.getModel());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void rad_ApplyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rad_ApplyMouseClicked
-        // TODO add your handling code here:
-        txt_Point.setText("");
-    }//GEN-LAST:event_rad_ApplyMouseClicked
-
-    private void rad_PointMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rad_PointMouseClicked
-        // TODO add your handling code here:
-        txt_Point.setText(String.valueOf(point));
-    }//GEN-LAST:event_rad_PointMouseClicked
-
+    
     /**
      * Create a JPanel for a product with customized design.
      *
@@ -969,7 +952,8 @@ public final class Home_Sale extends javax.swing.JPanel {
      * @param tableModel the table model to update on click.
      */
     public void loadProductsToPanel(JPanel jPanel, JScrollPane scrollPane, DefaultTableModel tableModel) {
-
+        jPanel1.removeAll();
+        
         jPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -1020,7 +1004,7 @@ public final class Home_Sale extends javax.swing.JPanel {
      * @param productList the list of products to add to the sale table.
      */
     public void loadProductDataToTableSale(DefaultTableModel tableModel, List<Product> productList) {
-
+        
         int count = 0;
         DecimalFormat moneyFormat = new DecimalFormat("#,### đ");
 
@@ -1061,114 +1045,51 @@ public final class Home_Sale extends javax.swing.JPanel {
 
             // Cập nhật tổng số tiền
             txt_TotalAmount.setText(moneyFormat.format(totalAmount));
-            AddPoint();
         }
     }
-
-    public void payment() {
-        // Kiểm tra lựa chọn radio button
-        if (!rad_Apply.isSelected() && !rad_Point.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn tích điểm hoặc áp dụng !!!");
-            return; // Dừng phương thức nếu không có lựa chọn nào
-        }
-
-        // Tạo đối tượng Bill
+    
+    public void payment(){
         Bill B = new Bill();
 
-        // Xử lý điểm dựa trên lựa chọn của người dùng
-        try {
-            int points = Integer.parseInt(txt_Point.getText().trim());
-            if (rad_Point.isSelected()) {
-                B.setPoint(customerpoint + points);
-            } else if (rad_Apply.isSelected()) {
-                B.setPoint(customerpoint - (int) sp_CustomerUsePoint.getValue());
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Điểm phải là số hợp lệ.");
-            return;
-        }
+        // Kiểm tra mã hóa đơn có tồn tại không
+            try {
+                
+                
+                // Thiết lập thông tin cho hóa đơn
+//                B.setAccountId(Integer.parseInt(txt_AcountID.getText().trim())); // Mã nhân viên
+                B.setCustomerId(customerID); // Mã khách hàng
+                B.setCreatedDate(currentTimestamp);
+                B.setTotalPrice(Double.parseDouble(txt_TotalAmount.getText().trim())); // Tổng tiền
+                B.setBillId(billDAO.NewBIllID());
+                // Thêm chi tiết hóa đơn nhập
+                List<BillDetail> chiTietList = new ArrayList<>();
+                for (int i = 0; i < tbl_BuyProduct.getRowCount(); i++) {
+                    BillDetail chitiet = new BillDetail();
 
-        try {
-            // Thiết lập thông tin cho hóa đơn
-            B.setCustomerId(customerID); // Mã khách hàng
-            B.setCreatedDate(currentTimestamp); // Ngày tạo hóa đơn
+                    chitiet.setProductId((String) tbl_BuyProduct.getValueAt(i, 0)); // Mã thuốc
+                    chitiet.setNameProduct((String) tbl_BuyProduct.getValueAt(i, 1)); // Tên thuốc
+                    chitiet.setQuantity((int) tbl_BuyProduct.getValueAt(i, 2)); // Số lượng
+                    chitiet.setPrice((double) tbl_BuyProduct.getValueAt(i, 3)); // Giá nhập
+                    chitiet.setSubtotal((double) tbl_BuyProduct.getValueAt(i, 4)); // Thành tiền
 
-            // Xử lý tổng tiền
-            String totalAmountStr = txt_TotalAmount.getText().replaceAll("[,\\sđ]", "");
-            if (totalAmountStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Tổng tiền không được để trống.");
-                return;
-            }
-            B.setTotalPrice(Double.parseDouble(totalAmountStr)); // Tổng tiền
-
-            B.setBillId(billDAO.NewBIllID()); // Lấy mã hóa đơn mới
-
-            // Thêm chi tiết hóa đơn
-            // Thêm chi tiết hóa đơn
-            List<BillDetail> chiTietList = new ArrayList<>();
-            for (int i = 0; i < tbl_BuyProduct.getRowCount(); i++) {
-                BillDetail chitiet = new BillDetail();
-
-                chitiet.setProductId((String) tbl_BuyProduct.getValueAt(i, 0)); // Mã sản phẩm
-                chitiet.setNameProduct((String) tbl_BuyProduct.getValueAt(i, 1)); // Tên sản phẩm
-
-                // Lấy giá trị từ bảng
-                Object quantityObj = tbl_BuyProduct.getValueAt(i, 2);
-                Object priceObj = tbl_BuyProduct.getValueAt(i, 3);
-                Object subtotalObj = tbl_BuyProduct.getValueAt(i, 4);
-
-                // Kiểm tra và chuyển đổi kiểu dữ liệu với bảo vệ
-                try {
-                    // Xử lý số lượng
-                    if (quantityObj instanceof String) {
-                        chitiet.setQuantity(Integer.parseInt((String) quantityObj));
-                    } else {
-                        throw new ClassCastException("Số lượng không hợp lệ.");
-                    }
-
-                    // Xử lý giá
-                    if (priceObj instanceof String) {
-                        chitiet.setPrice(Double.parseDouble((String) priceObj));
-                    } else {
-                        throw new ClassCastException("Giá không hợp lệ.");
-                    }
-
-                    // Xử lý thành tiền
-                    if (subtotalObj instanceof Integer) {
-                        chitiet.setSubtotal(((Integer) subtotalObj).doubleValue());
-                    } else {
-                        throw new ClassCastException("Thành tiền không hợp lệ.");
-                    }
-
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(this, "Dữ liệu không thể chuyển đổi thành số.");
-                    return;
-                } catch (ClassCastException e) {
-                    JOptionPane.showMessageDialog(this, e.getMessage());
-                    return;
+                    chiTietList.add(chitiet);
                 }
+                B.setBillDetailList(chiTietList);
 
-                chiTietList.add(chitiet);
+                // Lưu thông tin hóa đơn vào cơ sở dữ liệu
+                int result = billDAO.save(B);
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+                    billDAO.loadAllBillsData(); // Tải lại danh sách hóa đơn
+                } else {
+                    JOptionPane.showMessageDialog(this, "Lưu thất bại");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Tổng tiền và số lượng phải là số hợp lệ.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi: " + e.getMessage());
             }
-            B.setBillDetailList(chiTietList);
-
-            // Lưu thông tin hóa đơn vào cơ sở dữ liệu
-            int result = billDAO.save(B);
-            if (result > 0) {
-                JOptionPane.showMessageDialog(null, "Cập nhật thành công");
-                billDAO.loadAllBillsData(); // Tải lại danh sách hóa đơn
-            } else {
-                JOptionPane.showMessageDialog(this, "Lưu thất bại");
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi: " + e.getMessage());
-            for (int i = 0; i < tbl_BuyProduct.getRowCount(); i++) {
-                System.out.println("Quantity Type: " + tbl_BuyProduct.getValueAt(i, 2).getClass().getName());
-                System.out.println("Price Type: " + tbl_BuyProduct.getValueAt(i, 3).getClass().getName());
-                System.out.println("Subtotal Type: " + tbl_BuyProduct.getValueAt(i, 4).getClass().getName());
-            }
-
-        }
+        
     }
 
 
@@ -1185,6 +1106,7 @@ public final class Home_Sale extends javax.swing.JPanel {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cbx_List;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
