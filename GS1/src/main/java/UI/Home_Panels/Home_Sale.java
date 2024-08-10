@@ -35,8 +35,7 @@ public final class Home_Sale extends javax.swing.JPanel {
     public ProductTypeDAO productTypeDAO = new ProductTypeDAO();
     public BillDetailDAO billDetailDAO = new BillDetailDAO();
 
-    private double totalAmount = 0;
-    private int count = 0;
+    
 
     public Home_Sale() {
         initComponents();
@@ -51,6 +50,8 @@ public final class Home_Sale extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         rad_PaymentGroup = new javax.swing.ButtonGroup();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         PaymentForm = new javax.swing.JPanel();
         CustomerForm = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -60,8 +61,9 @@ public final class Home_Sale extends javax.swing.JPanel {
         txt_CustomerPoint = new javax.swing.JTextField();
         sp_CustomerUsePoint = new javax.swing.JSpinner();
         txt_CustomerDiscount = new javax.swing.JTextField();
-        btn_ApplyPoint = new javax.swing.JButton();
         txt_CustomerName = new javax.swing.JTextField();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
         ShowTotal = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -77,7 +79,6 @@ public final class Home_Sale extends javax.swing.JPanel {
         rad_Cash = new javax.swing.JRadioButton();
         rad_Bank = new javax.swing.JRadioButton();
         txt_Point = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         btn_Complete = new javax.swing.JButton();
         ProductForm = new javax.swing.JPanel();
         BuyList = new javax.swing.JPanel();
@@ -196,19 +197,6 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         CustomerForm.add(txt_CustomerDiscount, gridBagConstraints);
 
-        btn_ApplyPoint.setBackground(new java.awt.Color(255, 75, 102));
-        btn_ApplyPoint.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_ApplyPoint.setForeground(new java.awt.Color(255, 255, 255));
-        btn_ApplyPoint.setText("Áp dụng");
-        btn_ApplyPoint.setPreferredSize(new java.awt.Dimension(85, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 5, 20);
-        CustomerForm.add(btn_ApplyPoint, gridBagConstraints);
-
         txt_CustomerName.setBackground(new java.awt.Color(244, 244, 242));
         txt_CustomerName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         txt_CustomerName.setText("Nhập SĐT của khách vào");
@@ -231,6 +219,25 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         CustomerForm.add(txt_CustomerName, gridBagConstraints);
+
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("Tích điểm");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        CustomerForm.add(jRadioButton1, gridBagConstraints);
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("Áp Dụng");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        CustomerForm.add(jRadioButton2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -443,20 +450,12 @@ public final class Home_Sale extends javax.swing.JPanel {
         txt_Point.setBackground(new java.awt.Color(244, 244, 242));
         txt_Point.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         ShowTotal.add(txt_Point, gridBagConstraints);
-
-        jButton1.setBackground(new java.awt.Color(255, 75, 102));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Tích điểm");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        ShowTotal.add(jButton1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -720,6 +719,10 @@ public final class Home_Sale extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_SearchActionPerformed
 
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
     
     /**
      * Create a JPanel for a product with customized design.
@@ -890,6 +893,8 @@ public final class Home_Sale extends javax.swing.JPanel {
      * @param productList the list of products to add to the sale table.
      */
     public void loadProductDataToTableSale(DefaultTableModel tableModel, List<Product> productList) {
+        double totalAmount = 0;
+        int count = 0;
         DecimalFormat moneyFormat = new DecimalFormat("#,### đ");
 
         for (Product product : productList) {
@@ -931,6 +936,8 @@ public final class Home_Sale extends javax.swing.JPanel {
             txt_TotalAmount.setText(moneyFormat.format(totalAmount));
         }
     }
+    
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -941,11 +948,11 @@ public final class Home_Sale extends javax.swing.JPanel {
     private javax.swing.JPanel ProductSearch;
     private javax.swing.JPanel QRCode;
     private javax.swing.JPanel ShowTotal;
-    private javax.swing.JButton btn_ApplyPoint;
     private javax.swing.JButton btn_Complete;
     private javax.swing.JButton btn_Transferred;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cbx_List;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -958,6 +965,8 @@ public final class Home_Sale extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;

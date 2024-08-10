@@ -6,17 +6,14 @@ package UI.Home_Panels;
 
 /**
  *
- * @author Cuong
+ * @author levan
  */
-public class Home_Sale_QR extends javax.swing.JPanel {
+public class Home_Sale_Orders extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Home_Sale_QR
-     */
-    public Home_Sale_QR() {
+    
+    public Home_Sale_Orders() {
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,30 +23,31 @@ public class Home_Sale_QR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        qrCode = new javax.swing.JLabel();
+        tab_Orders = new javax.swing.JTabbedPane();
 
-        qrCode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/qrPayment.jpg"))); // NOI18N
+        setBackground(new java.awt.Color(254, 254, 252));
+
+        tab_Orders.setBackground(new java.awt.Color(255, 127, 146));
+        tab_Orders.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(qrCode)
-                .addContainerGap(174, Short.MAX_VALUE))
+            .addComponent(tab_Orders, javax.swing.GroupLayout.DEFAULT_SIZE, 815, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(qrCode)
-                .addContainerGap(29, Short.MAX_VALUE))
+            .addComponent(tab_Orders, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
         );
+
+        tab_Orders.addTab("Đơn 1", new Home_Sale());
+        tab_Orders.addTab("Đơn 2", new Home_Sale());
+        tab_Orders.addTab("Đơn 3", new Home_Sale());
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel qrCode;
+    private javax.swing.JTabbedPane tab_Orders;
     // End of variables declaration//GEN-END:variables
 }
