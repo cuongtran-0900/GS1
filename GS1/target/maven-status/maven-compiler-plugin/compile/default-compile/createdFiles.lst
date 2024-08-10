@@ -16,6 +16,7 @@ UI\Home_Panels\Home_Sale$10.class
 UI\Home_Panels\Home_Product.class
 UI\Home_Panels\Home_BIll$13.class
 MODEL\Product.class
+UI\Home_Panels\Home_Sale$13.class
 UI\Home_Panels\Home_BIll$11.class
 DAO\ProductTypeDAO.class
 UI\Home_Panels\Home_Report.class
@@ -29,6 +30,7 @@ UI\NewJFrame$2.class
 UI\Home$8.class
 UI\Home_Panels\Home_BIll$12.class
 UI\Home$1.class
+UI\Home_Panels\Home_Sale$12.class
 UI\Home_Panels\Home_Sale.class
 MODEL\Customer.class
 UI\Login$10.class
@@ -41,6 +43,7 @@ UI\Login$12.class
 MODEL\ProductType.class
 MODEL\Account.class
 UI\Home_Panels\Home_BIll$2.class
+UI\Home_Panels\Home_Sale$11.class
 UI\Home_Panels\Home_Sale$2.class
 UI\Home$6.class
 UI\Home.class
@@ -58,6 +61,7 @@ UI\Home$4.class
 UI\Login$8.class
 UI\Home_Panels\Home_BIll$7.class
 UI\Home_Panels\Home_BIll.class
+UI\Home_Panels\Home_BIll$15.class
 UI\Home_Panels\Home_BIll$14.class
 UI\Login$1.class
 UI\Home_Panels\Home_Sale$4.class

@@ -36,6 +36,7 @@ public class CustomerDAO extends ConnectSQL {
 
         return customerList;
     }
+    
     public void loadCustomersDataToConsole() {
         List<Customer> customerList = loadAllCustomersData();
         for (Customer customer : customerList) {

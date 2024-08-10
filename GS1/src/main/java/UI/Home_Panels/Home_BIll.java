@@ -25,11 +25,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.RowFilter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -100,6 +102,12 @@ public class Home_BIll extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         btn_ResetProduct = new javax.swing.JButton();
         txt_Time = new javax.swing.JTextField();
+
+        txt_FInd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_FIndKeyReleased(evt);
+            }
+        });
 
         jLabel1.setText("Tìm Kiếm :");
 
@@ -494,7 +502,6 @@ public class Home_BIll extends javax.swing.JPanel {
     }
 }
 
-
     private void updateTotalAmount() {
         int totalAmount = 0;
 
@@ -595,9 +602,6 @@ public class Home_BIll extends javax.swing.JPanel {
     txt_ProductName.setText("");
     txt_Price.setText("");
 }
-
-
-
 
     public void filltoTBL_Bill() {
         DefaultTableModel model = (DefaultTableModel) tbl_Bill.getModel();
@@ -770,11 +774,17 @@ public class Home_BIll extends javax.swing.JPanel {
         txt_Time.setText(currentTimestamp.toString());
         DefaultTableModel model = (DefaultTableModel) tbl_BillDetail.getModel();
         model.setRowCount(0); // Xóa dữ liệu cũ trong tblHDN
-        txt_BillID.setText(BDao.Maphatsinh());
+        txt_BillID.setText(BDao.NewBIllID());
         txt_AcountID.setText("");
         txt_CustomerID.setText("");
         txt_TotalAmount.setText("");
 
+    }
+    private void find() {
+        DefaultTableModel ob = (DefaultTableModel) tbl_Bill.getModel();
+        TableRowSorter<DefaultTableModel> obj = new TableRowSorter<>(ob);
+        tbl_Bill.setRowSorter(obj);
+        obj.setRowFilter(RowFilter.regexFilter("(?i)" + txt_FInd.getText()));
     }
 
     private void txt_CustomerIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_CustomerIDActionPerformed
@@ -829,6 +839,11 @@ public class Home_BIll extends javax.swing.JPanel {
         // TODO add your handling code here:
         update();
     }//GEN-LAST:event_btn_UpdateActionPerformed
+
+    private void txt_FIndKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_FIndKeyReleased
+        // TODO add your handling code here:
+        find();
+    }//GEN-LAST:event_txt_FIndKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
