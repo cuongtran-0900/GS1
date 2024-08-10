@@ -11,22 +11,26 @@ public class Bill {
     private Date createdDate;
     private String customerId;
     private double totalPrice;
+    private int Point;
     private List<BillDetail> BillDetailList;
 
     public Bill() {
         this.BillDetailList = new ArrayList<>();
     }
 
-    public Bill(String billId, int accountId, Date createdDate, String customerId, double totalPrice, List<BillDetail> BillDetailList) {
+    public Bill(String billId, int accountId, Date createdDate, String customerId, double totalPrice, int Point, List<BillDetail> BillDetailList) {
         this.billId = billId;
         this.accountId = accountId;
         this.createdDate = createdDate;
         this.customerId = customerId;
         this.totalPrice = totalPrice;
+        this.Point = Point;
         this.BillDetailList = BillDetailList;
     }
 
+
     // Getters and Setters
+        
     public String getBillId() {
         return billId;
     }
@@ -73,6 +77,14 @@ public class Bill {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public int getPoint() {
+        return Point;
+    }
+
+    public void setPoint(int Point) {
+        this.Point = Point;
     }
 
 }

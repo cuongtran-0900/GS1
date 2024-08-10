@@ -27,6 +27,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 public final class Home_Sale extends javax.swing.JPanel {
@@ -35,23 +37,19 @@ public final class Home_Sale extends javax.swing.JPanel {
 
     public ProductDAO productDAO = new ProductDAO();
     private List<Product> productList = productDAO.loadAllProductsData();
-    
+
     public BillDAO billDAO = new BillDAO();
     private List<Bill> billList = billDAO.loadAllBillsData();
-    
+
     public AccountDAO accountDAO = new AccountDAO();
-    
+
     public CustomerDAO customerDAO = new CustomerDAO();
     private List<Customer> CustomerList = customerDAO.loadAllCustomersData();
-    
+
     public ProductTypeDAO productTypeDAO = new ProductTypeDAO();
     public BillDetailDAO billDetailDAO = new BillDetailDAO();
-    
-    java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(System.currentTimeMillis());
 
-    String customerID = "";
-    double totalAmount = 0;
-    
+   
 
     public Home_Sale() {
         initComponents();
@@ -59,35 +57,62 @@ public final class Home_Sale extends javax.swing.JPanel {
         loadProductsToPanel(jPanel1, jScrollPane3, (DefaultTableModel) tbl_BuyProduct.getModel());
         tableEVT();
     }
-    
-    private void tableEVT(){
-        txt_CustomerName.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String phoneNumber = txt_CustomerName.getText().trim();
-        Customer foundCustomer = CustomerList.stream()
-                .filter(customer -> customer.getPhone().equals(phoneNumber))
-                .findFirst()
-                .orElse(null);
 
-        if (foundCustomer != null) {
-            // Lấy CustomersID từ khách hàng được tìm thấy
-            customerID = foundCustomer.getCustomerId();
-            // Làm gì đó với customerID, ví dụ:
-            JOptionPane.showMessageDialog(null, "CustomersID: " + customerID);
-        } else {
-            JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng với số điện thoại " + phoneNumber);
-        }
+    private void tableEVT() {
+        txt_CustomerName.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String phoneNumber = txt_CustomerName.getText().trim();
+                Customer foundCustomer = CustomerList.stream()
+                        .filter(customer -> customer.getPhone().equals(phoneNumber))
+                        .findFirst()
+                        .orElse(null);
+
+                if (foundCustomer != null) {
+                    // Lấy CustomersID từ khách hàng được tìm thấy
+                    customerID = foundCustomer.getCustomerId();
+                    customerpoint = foundCustomer.getPoint();
+                    // Làm gì đó với customerID, ví dụ:
+                    JOptionPane.showMessageDialog(null, "CustomersID: " + customerID);
+                    txt_CustomerPoint.setText(String.valueOf(customerpoint));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng với số điện thoại " + phoneNumber);
+                }
+            }
+        });
+
+        final int[] previousValue = {(int) sp_CustomerUsePoint.getValue()};
+
+        sp_CustomerUsePoint.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int currentValue = (int) sp_CustomerUsePoint.getValue();
+
+                // Kiểm tra nếu giá trị mới khác với giá trị trước đó
+                if (currentValue != previousValue[0]) {
+                    // Tính toán và cập nhật tổng tiền
+                    int discountValue = currentValue * 500;
+                    int updatedTotalAmount = (int) (totalAmount - discountValue);
+                    txt_TotalAmount.setText(String.valueOf(updatedTotalAmount));
+
+                    // Cập nhật giá trị trước đó thành giá trị hiện tại
+                    previousValue[0] = currentValue;
+                }
+            }
+        });
+
     }
-});
-       
-        
+
+    private void UpdateTotalAmount() {
+        point = Math.round((int) (totalAmount / 10000));
+        txt_Point.setText(String.valueOf(point));
+        int discount = (int) sp_CustomerUsePoint.getValue() * 500;
+        totalAmount = totalAmount - discount;
     }
-    
-    private void TotalAmount(){
-        
-        
-        
+
+    private void AddPoint() {
+        point = Math.round((int) (totalAmount / 10000));
+        txt_Point.setText(String.valueOf(point));
     }
 
     @SuppressWarnings("unchecked")
@@ -209,6 +234,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         txt_CustomerPoint.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerPoint.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_CustomerPoint.setRequestFocusEnabled(false);
+        txt_CustomerPoint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_CustomerPointActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -274,6 +304,11 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         buttonGroup1.add(rad_Point);
         rad_Point.setText("Tích điểm");
+        rad_Point.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rad_PointMouseClicked(evt);
+            }
+        });
         rad_Point.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rad_PointActionPerformed(evt);
@@ -286,6 +321,11 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         buttonGroup1.add(rad_Apply);
         rad_Apply.setText("Áp Dụng");
+        rad_Apply.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rad_ApplyMouseClicked(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -753,7 +793,6 @@ public final class Home_Sale extends javax.swing.JPanel {
     private void rad_BankMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rad_BankMouseClicked
         // TODO add your handling code here:
         QRCode.setVisible(true);
-
     }//GEN-LAST:event_rad_BankMouseClicked
 
     private void btn_TransferredMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_TransferredMouseClicked
@@ -795,9 +834,24 @@ public final class Home_Sale extends javax.swing.JPanel {
 
     private void btn_CompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CompleteActionPerformed
         // TODO add your handling code here:
+        payment();
+
     }//GEN-LAST:event_btn_CompleteActionPerformed
 
-    
+    private void txt_CustomerPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_CustomerPointActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_CustomerPointActionPerformed
+
+    private void rad_ApplyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rad_ApplyMouseClicked
+        // TODO add your handling code here:
+        txt_Point.setText("");
+    }//GEN-LAST:event_rad_ApplyMouseClicked
+
+    private void rad_PointMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rad_PointMouseClicked
+        // TODO add your handling code here:
+        txt_Point.setText(String.valueOf(point));
+    }//GEN-LAST:event_rad_PointMouseClicked
+
     /**
      * Create a JPanel for a product with customized design.
      *
@@ -915,7 +969,6 @@ public final class Home_Sale extends javax.swing.JPanel {
      * @param tableModel the table model to update on click.
      */
     public void loadProductsToPanel(JPanel jPanel, JScrollPane scrollPane, DefaultTableModel tableModel) {
-        
 
         jPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -967,7 +1020,7 @@ public final class Home_Sale extends javax.swing.JPanel {
      * @param productList the list of products to add to the sale table.
      */
     public void loadProductDataToTableSale(DefaultTableModel tableModel, List<Product> productList) {
-        
+
         int count = 0;
         DecimalFormat moneyFormat = new DecimalFormat("#,### đ");
 
@@ -1008,51 +1061,114 @@ public final class Home_Sale extends javax.swing.JPanel {
 
             // Cập nhật tổng số tiền
             txt_TotalAmount.setText(moneyFormat.format(totalAmount));
+            AddPoint();
         }
     }
-    
-    public void payment(){
+
+    public void payment() {
+        // Kiểm tra lựa chọn radio button
+        if (!rad_Apply.isSelected() && !rad_Point.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tích điểm hoặc áp dụng !!!");
+            return; // Dừng phương thức nếu không có lựa chọn nào
+        }
+
+        // Tạo đối tượng Bill
         Bill B = new Bill();
 
-        // Kiểm tra mã hóa đơn có tồn tại không
-            try {
-                
-                
-                // Thiết lập thông tin cho hóa đơn
-//                B.setAccountId(Integer.parseInt(txt_AcountID.getText().trim())); // Mã nhân viên
-                B.setCustomerId(customerID); // Mã khách hàng
-                B.setCreatedDate(currentTimestamp);
-                B.setTotalPrice(Double.parseDouble(txt_TotalAmount.getText().trim())); // Tổng tiền
-                B.setBillId(billDAO.NewBIllID());
-                // Thêm chi tiết hóa đơn nhập
-                List<BillDetail> chiTietList = new ArrayList<>();
-                for (int i = 0; i < tbl_BuyProduct.getRowCount(); i++) {
-                    BillDetail chitiet = new BillDetail();
-
-                    chitiet.setProductId((String) tbl_BuyProduct.getValueAt(i, 0)); // Mã thuốc
-                    chitiet.setNameProduct((String) tbl_BuyProduct.getValueAt(i, 1)); // Tên thuốc
-                    chitiet.setQuantity((int) tbl_BuyProduct.getValueAt(i, 2)); // Số lượng
-                    chitiet.setPrice((double) tbl_BuyProduct.getValueAt(i, 3)); // Giá nhập
-                    chitiet.setSubtotal((double) tbl_BuyProduct.getValueAt(i, 4)); // Thành tiền
-
-                    chiTietList.add(chitiet);
-                }
-                B.setBillDetailList(chiTietList);
-
-                // Lưu thông tin hóa đơn vào cơ sở dữ liệu
-                int result = billDAO.save(B);
-                if (result > 0) {
-                    JOptionPane.showMessageDialog(null, "Cập nhật thành công");
-                    billDAO.loadAllBillsData(); // Tải lại danh sách hóa đơn
-                } else {
-                    JOptionPane.showMessageDialog(this, "Lưu thất bại");
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Tổng tiền và số lượng phải là số hợp lệ.");
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi: " + e.getMessage());
+        // Xử lý điểm dựa trên lựa chọn của người dùng
+        try {
+            int points = Integer.parseInt(txt_Point.getText().trim());
+            if (rad_Point.isSelected()) {
+                B.setPoint(customerpoint + points);
+            } else if (rad_Apply.isSelected()) {
+                B.setPoint(customerpoint - (int) sp_CustomerUsePoint.getValue());
             }
-        
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Điểm phải là số hợp lệ.");
+            return;
+        }
+
+        try {
+            // Thiết lập thông tin cho hóa đơn
+            B.setCustomerId(customerID); // Mã khách hàng
+            B.setCreatedDate(currentTimestamp); // Ngày tạo hóa đơn
+
+            // Xử lý tổng tiền
+            String totalAmountStr = txt_TotalAmount.getText().replaceAll("[,\\sđ]", "");
+            if (totalAmountStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Tổng tiền không được để trống.");
+                return;
+            }
+            B.setTotalPrice(Double.parseDouble(totalAmountStr)); // Tổng tiền
+
+            B.setBillId(billDAO.NewBIllID()); // Lấy mã hóa đơn mới
+
+            // Thêm chi tiết hóa đơn
+            // Thêm chi tiết hóa đơn
+            List<BillDetail> chiTietList = new ArrayList<>();
+            for (int i = 0; i < tbl_BuyProduct.getRowCount(); i++) {
+                BillDetail chitiet = new BillDetail();
+
+                chitiet.setProductId((String) tbl_BuyProduct.getValueAt(i, 0)); // Mã sản phẩm
+                chitiet.setNameProduct((String) tbl_BuyProduct.getValueAt(i, 1)); // Tên sản phẩm
+
+                // Lấy giá trị từ bảng
+                Object quantityObj = tbl_BuyProduct.getValueAt(i, 2);
+                Object priceObj = tbl_BuyProduct.getValueAt(i, 3);
+                Object subtotalObj = tbl_BuyProduct.getValueAt(i, 4);
+
+                // Kiểm tra và chuyển đổi kiểu dữ liệu với bảo vệ
+                try {
+                    // Xử lý số lượng
+                    if (quantityObj instanceof String) {
+                        chitiet.setQuantity(Integer.parseInt((String) quantityObj));
+                    } else {
+                        throw new ClassCastException("Số lượng không hợp lệ.");
+                    }
+
+                    // Xử lý giá
+                    if (priceObj instanceof String) {
+                        chitiet.setPrice(Double.parseDouble((String) priceObj));
+                    } else {
+                        throw new ClassCastException("Giá không hợp lệ.");
+                    }
+
+                    // Xử lý thành tiền
+                    if (subtotalObj instanceof Integer) {
+                        chitiet.setSubtotal(((Integer) subtotalObj).doubleValue());
+                    } else {
+                        throw new ClassCastException("Thành tiền không hợp lệ.");
+                    }
+
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Dữ liệu không thể chuyển đổi thành số.");
+                    return;
+                } catch (ClassCastException e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                    return;
+                }
+
+                chiTietList.add(chitiet);
+            }
+            B.setBillDetailList(chiTietList);
+
+            // Lưu thông tin hóa đơn vào cơ sở dữ liệu
+            int result = billDAO.save(B);
+            if (result > 0) {
+                JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+                billDAO.loadAllBillsData(); // Tải lại danh sách hóa đơn
+            } else {
+                JOptionPane.showMessageDialog(this, "Lưu thất bại");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi: " + e.getMessage());
+            for (int i = 0; i < tbl_BuyProduct.getRowCount(); i++) {
+                System.out.println("Quantity Type: " + tbl_BuyProduct.getValueAt(i, 2).getClass().getName());
+                System.out.println("Price Type: " + tbl_BuyProduct.getValueAt(i, 3).getClass().getName());
+                System.out.println("Subtotal Type: " + tbl_BuyProduct.getValueAt(i, 4).getClass().getName());
+            }
+
+        }
     }
 
 

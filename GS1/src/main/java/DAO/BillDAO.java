@@ -2,6 +2,7 @@ package DAO;
 
 import MODEL.Bill;
 import MODEL.BillDetail;
+import MODEL.Customer;
 import UI.Home_Panels.Home_History;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -142,6 +143,10 @@ public class BillDAO extends ConnectSQL {
             st1.setDate(3, sqlDate);
             st1.setInt(4, B.getAccountId());
             st1.setDouble(5, B.getTotalPrice());
+            
+            String sql3 = "UPDATE  customer SET point where customerID like ";
+            PreparedStatement st3 = con.prepareStatement(sql3);
+            st3.setInt(0, 0);
 
             int row1 = st1.executeUpdate();
 
