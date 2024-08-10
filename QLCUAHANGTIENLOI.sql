@@ -3,7 +3,7 @@ CREATE DATABASE QLCUAHANGTIENLOI;
 GO
 
 -- Sử dụng cơ sở dữ liệu QLCUAHANGTIENLOI
-USE QLCUAHANGTIENLOI;
+--USE QLCUAHANGTIENLOI;
 GO
 
 -- Tạo bảng Account
@@ -57,6 +57,9 @@ CREATE TABLE Bill (
 );
 GO
 
+ALTER TABLE Bill 
+ALTER COLUMN  AccountId INT null;
+
 -- Tạo bảng BillDetail không có khóa chính
 CREATE TABLE BillDetail (
     BillId NVARCHAR(10) NOT NULL,
@@ -87,6 +90,10 @@ ADD CONSTRAINT FK_Bill_Customer
 FOREIGN KEY (CustomerId) 
 REFERENCES Customer(CustomerId);
 GO
+
+
+
+
 
 -- Thêm ràng buộc khóa ngoại cho bảng BillDetail liên kết với bảng Bill
 ALTER TABLE BillDetail 

@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class ConnectSQL {
 
     protected Connection con = null;
-    private static final String url = "jdbc:sqlserver://lvabm:1433;databaseName=QLCUAHANGTIENLOI;encrypt=false;trustServerCertificate=false;";
+    private static final String url = "jdbc:sqlserver://localhost:1433;databaseName=QLCUAHANGTIENLOI;encrypt=false";
     private static final String user = "sa";
     private static final String pass = "12345678";
     public ConnectSQL(){
