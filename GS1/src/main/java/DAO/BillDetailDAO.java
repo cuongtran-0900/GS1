@@ -1,7 +1,7 @@
 package DAO;
 
 import MODEL.BillDetail;
-import UI.Home_Panels.Home_BIll;
+import UI.Home_Panels.Home_History;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +36,7 @@ List<BillDetail> BDList = new ArrayList<>();
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Home_BIll.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Home_History.class.getName()).log(Level.SEVERE, null, ex);
         }
         return BDList;
     }
