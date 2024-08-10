@@ -4,27 +4,21 @@
  */
 package UI.Home_Panels;
 
-import MODEL.Product;
-import DAO.ProductDAO;
+
 import MODEL.Bill;
 import DAO.BillDAO;
+import DAO.CustomerDAO;
 import MODEL.BillDetail;
+import MODEL.Customer;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.event.ListSelectionEvent;
+import javax.swing.RowFilter;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -44,6 +38,9 @@ public class Home_History extends javax.swing.JPanel {
 
     BillDAO BDao = new BillDAO();
     List<Bill> BillList = BDao.loadAllBillsData();
+    
+    CustomerDAO customerDAO = new CustomerDAO();
+    List<Customer> customerList = customerDAO.loadAllCustomersData();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -74,6 +71,12 @@ public class Home_History extends javax.swing.JPanel {
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         txt_Find.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txt_Find.setForeground(new java.awt.Color(255, 255, 255));
+        txt_Find.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_FindKeyReleased(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -95,6 +98,7 @@ public class Home_History extends javax.swing.JPanel {
 
         txt_CustomerID.setEditable(false);
         txt_CustomerID.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txt_CustomerID.setForeground(new java.awt.Color(255, 255, 255));
         txt_CustomerID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_CustomerIDActionPerformed(evt);
@@ -176,6 +180,8 @@ public class Home_History extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbl_Bill.setSelectionBackground(new java.awt.Color(0, 0, 51));
+        tbl_Bill.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tbl_Bill.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_BillMouseClicked(evt);
@@ -225,6 +231,8 @@ public class Home_History extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbl_BillDetail.setSelectionBackground(new java.awt.Color(0, 0, 51));
+        tbl_BillDetail.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tbl_BillDetail.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_BillDetailMouseClicked(evt);
@@ -261,7 +269,12 @@ public class Home_History extends javax.swing.JPanel {
 
 
 
-
+    private void find() {
+            DefaultTableModel ob = (DefaultTableModel) tbl_Bill.getModel();
+            TableRowSorter<DefaultTableModel> obj = new TableRowSorter<>(ob);
+            tbl_Bill.setRowSorter(obj);
+            obj.setRowFilter(RowFilter.regexFilter("(?i)" + txt_Find.getText()));
+        }
 
     public void filltoTBL_Bill() {
         DefaultTableModel model = (DefaultTableModel) tbl_Bill.getModel();
@@ -286,7 +299,21 @@ public class Home_History extends javax.swing.JPanel {
         int modelIndex = tbl_Bill.convertRowIndexToModel(viewIndex);
         if (modelIndex >= 0 && modelIndex < BillList.size()) {
             Bill B = BillList.get(modelIndex); // Lấy hóa đơn nhập từ danh sách
-            txt_CustomerID.setText(B.getCustomerId());
+            
+            String customerID = B.getCustomerId();
+        Customer foundCustomer = customerList.stream()
+                .filter(customer -> customer.getCustomerId().equals(customerID))
+                .findFirst()
+                .orElse(null);
+
+        if (foundCustomer != null) {
+            // Lấy CustomersID từ khách hàng được tìm thấy
+            String customerName = foundCustomer.getCustomerName();
+            txt_CustomerID.setText(customerName);
+        } else {
+            JOptionPane.showMessageDialog(null, "Không tìm thấy Tên Khách Hàng " );
+        }
+            
             showDetailInTblHDN(B);
 
         }
@@ -321,6 +348,10 @@ public class Home_History extends javax.swing.JPanel {
     private void txt_CustomerIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_CustomerIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_CustomerIDActionPerformed
+
+    private void txt_FindKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_FindKeyReleased
+        find();
+    }//GEN-LAST:event_txt_FindKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 public final class Home_Sale extends javax.swing.JPanel {
-
+    
 
     public LeVanAn levanan = new LeVanAn();
 
@@ -34,6 +34,7 @@ public final class Home_Sale extends javax.swing.JPanel {
     public CustomerDAO customerDAO = new CustomerDAO();
     public ProductTypeDAO productTypeDAO = new ProductTypeDAO();
     public BillDetailDAO billDetailDAO = new BillDetailDAO();
+    List<Product> productList = productDAO.loadAllProductsData();
 
     
 
@@ -80,6 +81,7 @@ public final class Home_Sale extends javax.swing.JPanel {
         rad_Bank = new javax.swing.JRadioButton();
         txt_Point = new javax.swing.JTextField();
         btn_Complete = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         ProductForm = new javax.swing.JPanel();
         BuyList = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -97,7 +99,7 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout(0, 10));
 
-        PaymentForm.setBackground(new java.awt.Color(246, 245, 242));
+        PaymentForm.setBackground(new java.awt.Color(254, 254, 252));
         PaymentForm.setLayout(new java.awt.GridBagLayout());
 
         CustomerForm.setBackground(new java.awt.Color(8, 131, 149));
@@ -110,10 +112,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         jLabel7.setText("Sử dụng");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         CustomerForm.add(jLabel7, gridBagConstraints);
 
@@ -123,10 +126,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         jLabel8.setText("Số điểm");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         CustomerForm.add(jLabel8, gridBagConstraints);
 
@@ -136,10 +140,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         jLabel9.setText("Tổng giảm");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         CustomerForm.add(jLabel9, gridBagConstraints);
 
@@ -149,16 +154,18 @@ public final class Home_Sale extends javax.swing.JPanel {
         jLabel10.setText("Khách hàng");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         CustomerForm.add(jLabel10, gridBagConstraints);
 
         txt_CustomerPoint.setEditable(false);
         txt_CustomerPoint.setBackground(new java.awt.Color(244, 244, 242));
         txt_CustomerPoint.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txt_CustomerPoint.setForeground(java.awt.Color.black);
         txt_CustomerPoint.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerPoint.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_CustomerPoint.setRequestFocusEnabled(false);
@@ -185,6 +192,7 @@ public final class Home_Sale extends javax.swing.JPanel {
         txt_CustomerDiscount.setEditable(false);
         txt_CustomerDiscount.setBackground(new java.awt.Color(244, 244, 242));
         txt_CustomerDiscount.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txt_CustomerDiscount.setForeground(java.awt.Color.black);
         txt_CustomerDiscount.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerDiscount.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_CustomerDiscount.setRequestFocusEnabled(false);
@@ -199,6 +207,7 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         txt_CustomerName.setBackground(new java.awt.Color(244, 244, 242));
         txt_CustomerName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txt_CustomerName.setForeground(java.awt.Color.black);
         txt_CustomerName.setText("Nhập SĐT của khách vào");
         txt_CustomerName.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerName.setPreferredSize(new java.awt.Dimension(64, 28));
@@ -230,6 +239,7 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         CustomerForm.add(jRadioButton1, gridBagConstraints);
 
         buttonGroup1.add(jRadioButton2);
@@ -237,14 +247,14 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         CustomerForm.add(jRadioButton2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         PaymentForm.add(CustomerForm, gridBagConstraints);
@@ -260,10 +270,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         ShowTotal.add(jLabel3, gridBagConstraints);
 
@@ -274,10 +285,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         ShowTotal.add(jLabel6, gridBagConstraints);
 
@@ -288,15 +300,17 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         ShowTotal.add(jLabel2, gridBagConstraints);
 
         txt_CustomerPayment.setBackground(new java.awt.Color(244, 244, 242));
-        txt_CustomerPayment.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txt_CustomerPayment.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txt_CustomerPayment.setForeground(java.awt.Color.black);
         txt_CustomerPayment.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_CustomerPayment.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_CustomerPayment.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -315,8 +329,8 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         txt_GiveBack.setEditable(false);
         txt_GiveBack.setBackground(new java.awt.Color(244, 244, 242));
-        txt_GiveBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txt_GiveBack.setForeground(new java.awt.Color(255, 0, 0));
+        txt_GiveBack.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txt_GiveBack.setForeground(java.awt.Color.black);
         txt_GiveBack.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_GiveBack.setPreferredSize(new java.awt.Dimension(64, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -335,10 +349,11 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         ShowTotal.add(jLabel1, gridBagConstraints);
 
@@ -349,17 +364,18 @@ public final class Home_Sale extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
         ShowTotal.add(jLabel5, gridBagConstraints);
 
         txt_TotalAmount.setEditable(false);
         txt_TotalAmount.setBackground(new java.awt.Color(244, 244, 242));
-        txt_TotalAmount.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        txt_TotalAmount.setForeground(new java.awt.Color(255, 0, 0));
+        txt_TotalAmount.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        txt_TotalAmount.setForeground(java.awt.Color.black);
         txt_TotalAmount.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_TotalAmount.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_TotalAmount.setRequestFocusEnabled(false);
@@ -374,8 +390,8 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         txt_Discount.setEditable(false);
         txt_Discount.setBackground(new java.awt.Color(244, 244, 242));
-        txt_Discount.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txt_Discount.setForeground(new java.awt.Color(255, 255, 0));
+        txt_Discount.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txt_Discount.setForeground(java.awt.Color.black);
         txt_Discount.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_Discount.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_Discount.setRequestFocusEnabled(false);
@@ -390,7 +406,8 @@ public final class Home_Sale extends javax.swing.JPanel {
 
         txt_GrandTotal.setEditable(false);
         txt_GrandTotal.setBackground(new java.awt.Color(244, 244, 242));
-        txt_GrandTotal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txt_GrandTotal.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        txt_GrandTotal.setForeground(java.awt.Color.black);
         txt_GrandTotal.setMaximumSize(new java.awt.Dimension(64, 28));
         txt_GrandTotal.setPreferredSize(new java.awt.Dimension(64, 28));
         txt_GrandTotal.setRequestFocusEnabled(false);
@@ -447,19 +464,18 @@ public final class Home_Sale extends javax.swing.JPanel {
         ShowTotal.add(rad_Bank, gridBagConstraints);
 
         txt_Point.setEditable(false);
-        txt_Point.setBackground(new java.awt.Color(244, 244, 242));
+        txt_Point.setBackground(new java.awt.Color(204, 204, 204));
         txt_Point.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         ShowTotal.add(txt_Point, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
@@ -468,18 +484,34 @@ public final class Home_Sale extends javax.swing.JPanel {
         PaymentForm.add(ShowTotal, gridBagConstraints);
 
         btn_Complete.setBackground(new java.awt.Color(255, 75, 102));
-        btn_Complete.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
+        btn_Complete.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         btn_Complete.setForeground(new java.awt.Color(255, 255, 255));
         btn_Complete.setText("Hoàn tất");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 15;
         gridBagConstraints.ipady = 15;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         PaymentForm.add(btn_Complete, gridBagConstraints);
+
+        jButton1.setBackground(new java.awt.Color(102, 102, 102));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Làm mới");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        PaymentForm.add(jButton1, gridBagConstraints);
 
         add(PaymentForm, java.awt.BorderLayout.LINE_END);
 
@@ -603,7 +635,7 @@ public final class Home_Sale extends javax.swing.JPanel {
                     .addGroup(ProductSearchLayout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(18, 18, 18)
-                        .addComponent(txt_Search, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                        .addComponent(txt_Search, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cbx_List, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -617,7 +649,7 @@ public final class Home_Sale extends javax.swing.JPanel {
                     .addComponent(cbx_List, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_Search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -676,12 +708,12 @@ public final class Home_Sale extends javax.swing.JPanel {
         ProductFormLayout.setHorizontalGroup(
             ProductFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(QRCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(BuyList, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+            .addComponent(BuyList, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
         );
         ProductFormLayout.setVerticalGroup(
             ProductFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(QRCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(BuyList, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+            .addComponent(BuyList, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
         );
 
         add(ProductForm, java.awt.BorderLayout.CENTER);
@@ -725,6 +757,12 @@ public final class Home_Sale extends javax.swing.JPanel {
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        productList = productDAO.loadAllProductsData();
+        loadProductsToPanel(jPanel1, jScrollPane3, (DefaultTableModel) tbl_BuyProduct.getModel());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     
     /**
@@ -844,8 +882,8 @@ public final class Home_Sale extends javax.swing.JPanel {
      * @param tableModel the table model to update on click.
      */
     public void loadProductsToPanel(JPanel jPanel, JScrollPane scrollPane, DefaultTableModel tableModel) {
-        List<Product> productList = productDAO.loadAllProductsData();
-
+        jPanel1.removeAll();
+        
         jPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -956,6 +994,7 @@ public final class Home_Sale extends javax.swing.JPanel {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cbx_List;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
