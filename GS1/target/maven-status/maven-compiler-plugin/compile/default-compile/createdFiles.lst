@@ -3,8 +3,8 @@ UI\Home_Panels\Home_Sale$9.class
 DAO\CustomerDAO.class
 DAO\BillDetailDAO.class
 UI\Home$2.class
-UI\Home_Panels\Home_Sale$15.class
 UI\Home_Panels\Home_Sale$6.class
+UI\Home_Panels\Home_Product$8.class
 UI\Login$4.class
 UI\Login$11.class
 DAO\ConnectSQL.class
@@ -17,9 +17,9 @@ UI\Home_Panels\Home_Sale$13.class
 DAO\ProductTypeDAO.class
 UI\Home_Panels\Home_Report.class
 UI\Home_Panels\Home_Sale$7.class
+UI\Home_Panels\Home_Product$6.class
 DAO\ProductDAO.class
 UI\LeVanAn$1.class
-UI\Home_Panels\Home_Sale$17.class
 UI\Home_Panels\Home_History.class
 UI\Home_Panels\Home_Sale$1.class
 UI\Home$8.class
@@ -45,13 +45,11 @@ UI\Home_Panels\Home_Sale$14.class
 MODEL\Bill.class
 UI\Home_Panels\Home_Dashboard.class
 UI\Home_Panels\Home_History$4.class
-UI\NewJFrame.class
-UI\Home_Panels\Home_Sale$16.class
 UI\Home_Panels\Home_History$1.class
+UI\Home_Panels\Home_Product$7.class
 UI\Home_Panels\Home_Sale$5.class
 DAO\AccountDAO.class
 MODEL\BillDetail.class
-UI\NewJFrame$1.class
 UI\Home_Panels\Home_Sale$8.class
 UI\Login.class
 UI\Home$4.class

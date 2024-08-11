@@ -4,7 +4,6 @@ import MODEL.Bill;
 import MODEL.BillDetail;
 import MODEL.Customer;
 import UI.Home_Panels.Home_History;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,8 +52,8 @@ public class BillDAO extends ConnectSQL {
                     DB.setProductId(rs.getString("ProductId"));
                     DB.setNameProduct(rs.getString("ProductName"));
                     DB.setQuantity(rs.getInt("Quantity"));
-                    DB.setSubtotal(rs.getInt("Subtotal"));
-                    DB.setPrice(rs.getInt("Price"));
+                    DB.setSubtotal(rs.getDouble("Subtotal"));
+                    DB.setPrice(rs.getDouble("Price"));
                     BillCurent.getBillDetailList().add(DB);
 
                 }
@@ -105,7 +104,7 @@ public class BillDAO extends ConnectSQL {
     public String fillBillID() {
         String mps = null;
         try {
-            String sql = "SELECT BillID FROM Bill WHERE BillID LIKE 'hd%' ORDER BY BillID DESC";
+            String sql = "SELECT BillID FROM Bill WHERE BillID LIKE 'HD%' ORDER BY BillID DESC";
             try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
                 if (rs.next()) {
@@ -123,15 +122,13 @@ public class BillDAO extends ConnectSQL {
     }
 
     public String NewBIllID() {
-        if (billList.size() <= 0) {
-            return "hd001";
-        } else {
+
             int ma = Integer.parseInt(fillBillID()) + 1;
-            return String.format("hd%03d", ma);
-        }
+            return String.format("HD%03d", ma);
+        
     }
 
-    public int save(Bill B) {
+    public int saveBillToDB(Bill B) {
         try {
             String sql1 = "INSERT INTO Bill (BillId, CustomerId, CreatedDate, AccountId, TotalPrice) VALUES(?,?,?,?,?)";
             PreparedStatement st1 = con.prepareStatement(sql1);
@@ -144,10 +141,6 @@ public class BillDAO extends ConnectSQL {
             st1.setInt(4, B.getAccountId());
             st1.setDouble(5, B.getTotalPrice());
             
-            String sql3 = "UPDATE  customer SET point where customerID like ";
-            PreparedStatement st3 = con.prepareStatement(sql3);
-            st3.setInt(0, 0);
-
             int row1 = st1.executeUpdate();
 
             for (BillDetail BD : B.getBillDetailList()) {

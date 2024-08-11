@@ -10,25 +10,18 @@ import DAO.BillDAO;
 import DAO.CustomerDAO;
 import MODEL.BillDetail;
 import MODEL.Customer;
-
+import UI.LeVanAn;
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
-
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 
-/**
- *
- * @author Cuong
- */
+
 public class Home_History extends javax.swing.JPanel {
-
-    /**
-     * Creates new form Home_BIll
-     */
+    LeVanAn levanan = new LeVanAn();
+    private DecimalFormat moneyFormat = new DecimalFormat("#,### đ");
     public Home_History() {
         initComponents();
         filltoTBL_Bill();
@@ -67,11 +60,12 @@ public class Home_History extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        jPanel1.setBackground(new java.awt.Color(246, 245, 242));
+        jPanel1.setBackground(new java.awt.Color(0, 85, 206));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        txt_Find.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txt_Find.setForeground(new java.awt.Color(255, 255, 255));
+        txt_Find.setBackground(new java.awt.Color(255, 255, 255));
+        txt_Find.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txt_Find.setForeground(new java.awt.Color(0, 0, 0));
         txt_Find.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_FindKeyReleased(evt);
@@ -88,7 +82,7 @@ public class Home_History extends javax.swing.JPanel {
 
         jLabel5.setBackground(new java.awt.Color(0, 0, 0));
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Mã Khách Hàng :");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -97,8 +91,9 @@ public class Home_History extends javax.swing.JPanel {
         jPanel1.add(jLabel5, gridBagConstraints);
 
         txt_CustomerID.setEditable(false);
+        txt_CustomerID.setBackground(new java.awt.Color(255, 255, 255));
         txt_CustomerID.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txt_CustomerID.setForeground(new java.awt.Color(255, 255, 255));
+        txt_CustomerID.setForeground(new java.awt.Color(0, 0, 0));
         txt_CustomerID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_CustomerIDActionPerformed(evt);
@@ -115,7 +110,7 @@ public class Home_History extends javax.swing.JPanel {
 
         jLabel1.setBackground(new java.awt.Color(0, 0, 0));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Tìm Kiếm :");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -135,6 +130,7 @@ public class Home_History extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         jPanel1.add(jLabel2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -202,8 +198,8 @@ public class Home_History extends javax.swing.JPanel {
         jPanel2.add(jScrollPane1, gridBagConstraints);
 
         tbl_BillDetail.setAutoCreateRowSorter(true);
-        tbl_BillDetail.setBackground(new java.awt.Color(8, 131, 149));
-        tbl_BillDetail.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        tbl_BillDetail.setBackground(new java.awt.Color(204, 150, 0));
+        tbl_BillDetail.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         tbl_BillDetail.setForeground(new java.awt.Color(255, 255, 255));
         tbl_BillDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -269,13 +265,7 @@ public class Home_History extends javax.swing.JPanel {
 
 
 
-    private void find() {
-            DefaultTableModel ob = (DefaultTableModel) tbl_Bill.getModel();
-            TableRowSorter<DefaultTableModel> obj = new TableRowSorter<>(ob);
-            tbl_Bill.setRowSorter(obj);
-            obj.setRowFilter(RowFilter.regexFilter("(?i)" + txt_Find.getText()));
-        }
-
+   
     public void filltoTBL_Bill() {
         DefaultTableModel model = (DefaultTableModel) tbl_Bill.getModel();
         model.setRowCount(0); // Xóa tất cả các hàng hiện có trong bảng
@@ -284,7 +274,7 @@ public class Home_History extends javax.swing.JPanel {
         Set<String> seenBillIds = new HashSet<>();
         for (Bill B : BillList) {
             if (!seenBillIds.contains(B.getBillId())) {
-                model.addRow(new Object[]{B.getBillId(), B.getAccountId(), B.getCreatedDate(), B.getTotalPrice()});
+                model.addRow(new Object[]{B.getBillId(), B.getAccountId(), B.getCreatedDate(), moneyFormat.format(B.getTotalPrice())});
                 seenBillIds.add(B.getBillId());
             }
         }
@@ -350,7 +340,7 @@ public class Home_History extends javax.swing.JPanel {
     }//GEN-LAST:event_txt_CustomerIDActionPerformed
 
     private void txt_FindKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_FindKeyReleased
-        find();
+        levanan.filterDataByTableToTextField(tbl_Bill, txt_Find);
     }//GEN-LAST:event_txt_FindKeyReleased
 
 

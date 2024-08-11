@@ -2,6 +2,7 @@ package DAO;
 
 import MODEL.Customer;
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,4 +49,24 @@ public class CustomerDAO extends ConnectSQL {
             System.out.println("--------------------------");
         }
     }
+    
+    /**
+     * Update customer's points by their phone number.
+     * @param phone the customer's phone number.
+     * @param newPoints the new points to be set.
+     * @return true if the update was successful, false otherwise.
+     */
+    public boolean updateCustomerPointByPhone(String phone, int newPoints) {
+        String sql = "UPDATE Customer SET Point = ? WHERE Phone = ?";
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setInt(1, newPoints);
+            pstmt.setString(2, phone);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
